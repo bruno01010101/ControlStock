@@ -1,0 +1,16 @@
+.main{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.aside{
+    width: 18%;
+    height: 100%;
+    box-shadow: var(--shadow);
+}
+
+.content{
+    width: 82%;
+    height: 100%;
+}
