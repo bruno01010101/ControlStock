@@ -7,6 +7,7 @@ import { BsBoxArrowDown,BsBoxArrowInUp  } from "react-icons/bs";
 import { TiClipboard } from "react-icons/ti";
 import Avatar from '@mui/material/Avatar';
 import MoreButton from '../moreButton';
+import { CiCircleQuestion } from "react-icons/ci";
 
 export default function Aside() {
   return (
@@ -14,11 +15,11 @@ export default function Aside() {
       <section className={styles.menu}>
         <div className={styles.menuHeader}>
           <img src="/favicon.svg" alt="ControlStock Logo" className={styles.logo} />
-          <div>
-            <Typography variant="h5" component="h1">
+          <div className>
+            <h2>
               Control Stock
-            </Typography>
-            <Typography variant="subtitle1" component="p" color="textSecondary">
+            </h2>
+            <Typography variant="subtitle1" component="p" color="textSecondary" className={styles.oi}>
               Gestão de estoque
             </Typography>
           </div>
@@ -58,7 +59,7 @@ export default function Aside() {
         </div>
       </section>
       <section className={styles.footer}>
-        <p className={styles.menuTitle} style={{ fontWeight: 'bold' }}>Central de Ajuda</p>
+        <p className='menuTitle' style={{ fontWeight: 'bold' }}>Central de Ajuda</p>
         <hr />
         <div className={styles.menuHeader}>
           <Avatar sx={{ bgcolor: 'blue[500]' }}>B</Avatar>

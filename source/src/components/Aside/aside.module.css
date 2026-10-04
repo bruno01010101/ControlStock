@@ -1,5 +1,8 @@
 .aside {
     height: 100vh;
+    min-height: 720px;
+    position: sticky;
+    top: 0;
     background-color: white;
     padding: 1rem;
     display: flex;
@@ -43,9 +46,22 @@
     gap: 0.5rem;
 }
 
-.footeText{padding: 1rem 0rem;}
-.footeText p{line-height: 1.2;}
+.footeText {
+    padding: 1rem 0rem;
+}
+
+.footeText p {
+    line-height: 1.2;
+}
+
 .moreButton {
     justify-self: flex-start;
     align-self: center;
+}
+@media screen and (max-width: 1380px){
+    .menuHeader > img{
+        width: 50px;
+        align-self: flex-start;
+    }
+    .oi{display: none;}
 }

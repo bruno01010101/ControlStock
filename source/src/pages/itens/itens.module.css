@@ -81,3 +81,39 @@
 .greed {
     grid-column: 1 / 3;
 }
+
+.movimentacoes{
+    width: 100%;
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.movimentation{
+    padding: 0.7rem 0;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+
+}
+
+.entry{
+    color: oklch(53.81% 0.15405 148.442);
+}
+
+@media screen and (max-width: 1150px) {
+    .content{
+        flex-wrap: wrap;
+    }
+
+    .lateral{
+        flex-direction: row;
+        width: 100%;
+    }
+}
