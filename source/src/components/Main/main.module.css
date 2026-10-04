@@ -13,4 +13,5 @@
 .content{
     width: 82%;
     height: 100%;
+    background-color: var(--background-color);
 }

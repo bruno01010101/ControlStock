@@ -1,0 +1,43 @@
+.itensBaixoEstoque{
+    background-color: #fff5df;
+    border-radius: 15px;
+    padding: 15px;
+    border: 1px solid #f4e0b4;
+    color: #dda75e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 17px;
+    height: 150px;
+}
+
+.paragrafo{
+    font-size: 13px;
+    color: #9ea2a8;
+    line-height: 1.5;
+}
+
+.quantidade{
+    font-size: 40px;
+    font-weight: bolder;
+    justify-self: flex-end;
+}
+
+.titulo{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 60%;
+    gap: 10px;
+}
+
+.icone{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.text{
+    line-height: 1;
+}

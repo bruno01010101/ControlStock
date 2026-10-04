@@ -5,6 +5,8 @@ import { RiDashboardFill } from "react-icons/ri";
 import { FiBox } from "react-icons/fi";
 import { BsBoxArrowDown,BsBoxArrowInUp  } from "react-icons/bs";
 import { TiClipboard } from "react-icons/ti";
+import Avatar from '@mui/material/Avatar';
+import MoreButton from '../moreButton';
 
 export default function Aside() {
   return (
@@ -23,8 +25,8 @@ export default function Aside() {
         </div>
         <div className={styles.menuItems}>
           <div>
-              <p className={styles.menuTitle}>MENU</p>
-            <Link to="/entrada" className={styles.menuItem}>
+              <p className="menuTitle">MENU</p>
+            <Link to="/dashboard" className={styles.menuItem}>
               <RiDashboardFill />
               Dashboard
             </Link>
@@ -56,7 +58,18 @@ export default function Aside() {
         </div>
       </section>
       <section className={styles.footer}>
-
+        <p className={styles.menuTitle} style={{ fontWeight: 'bold' }}>Central de Ajuda</p>
+        <hr />
+        <div className={styles.menuHeader}>
+          <Avatar sx={{ bgcolor: 'blue[500]' }}>B</Avatar>
+          <div className={styles.footeText}>
+            <p style={{fontSize: '0.900rem', margin: '0' }}>Nome do Usuário</p>
+            <p style={{ fontSize: '0.750rem', color: 'var(--primary-text-color)' }}>função</p>
+          </div>
+          <span className={styles.moreButton}>
+            <MoreButton options={["Configurações", "Sair"]} click={[]} />
+          </span>
+        </div>
       </section>
     </aside>
   );
