@@ -8,8 +8,14 @@ import Saidas from './pages/saida';
 import Main from './components/Main';
 import Dashboard from './pages/dashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
+import { useEffect } from 'react';
+import { Cadastrar } from './supabase/storageFunctions';
 
 function App() {
+
+  useEffect(() => {
+    Cadastrar()
+  }, [])
   return (
     <Provider store={store}>
       <Router>
