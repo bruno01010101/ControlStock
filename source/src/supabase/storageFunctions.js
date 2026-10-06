@@ -1,15 +1,28 @@
 import { supabase } from "."
 
-export function Cadastrar(){
+export function Cadastrar(email, password){
     supabase.auth.signUp({
-        email: "usuario@email.com",
-        senha: "123456"
-    }).then(({data, error}) => {
+        email,
+        password
+    }).then(({error}) => {
         if(error){
             console.warn(error)
         }
-        else{
-            console.log(data)
-        }
     })
+}
+
+export async function Logar(email, password){
+    const {data, error} = await supabase.auth.signInWithPassword({email, password})
+    console.warn(error)
+}
+
+export async function VerificaLogin() {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) {
+        console.warn(error);
+        return null;
+    }
+
+    return data.session;
 }

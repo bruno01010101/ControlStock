@@ -1,0 +1,72 @@
+.tudo {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    gap: 1.5rem;
+}
+
+.main {
+    border-radius: 10px;
+    background-color: white;
+    width: 100%;
+    max-width: 500px;
+    padding: 1.7rem;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.p {
+    font-size: 0.9rem;
+    color: var(--primary-text-color);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 20px 0px;
+}
+
+.form>input {
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    outline: none;
+}
+
+.h1 {
+    font-size: 1.8rem;
+}
+
+.blue {
+    font-size: 0.875rem;
+    color: #2563EB;
+    text-align: right;
+    padding: 10px;
+}
+
+.button {
+    width: 100%;
+    border-radius: 15px;
+    background: #2563eb;
+    color: #fff;
+    cursor: pointer;
+}
+
+.p > a{
+    text-decoration: none;
+}
+
+.p > a:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}

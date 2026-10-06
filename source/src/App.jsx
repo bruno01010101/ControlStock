@@ -8,28 +8,31 @@ import Saidas from './pages/saida';
 import Main from './components/Main';
 import Dashboard from './pages/dashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import { useEffect } from 'react';
-import { Cadastrar } from './supabase/storageFunctions';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
 
-  useEffect(() => {
-    Cadastrar()
-  }, [])
   return (
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<Main />}>
-            <Route path="auth" element={<Auth />} />
-            <Route path="entradas" element={<Entrada />} />
-            <Route path="itens" element={<Itens />} />
-            <Route path="pedidos" element={<Pedidos />} />
-            <Route path="saidas" element={<Saidas />} />
-            <Route path="dashboard" element={<Dashboard />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Main />}>
+              <Route path="auth" element={<Auth />} />
+              <Route path="entradas" element={<Entrada />} />
+              <Route path="itens" element={<Itens />} />
+              <Route path="pedidos" element={<Pedidos />} />
+              <Route path="saidas" element={<Saidas />} />
+              <Route path="dashboard" element={<Dashboard />} />
+            </Route>
+          </Route>
+          <Route path='/auth/'  >
+            <Route path='login' element={<Auth type="login" />} />
+            <Route path='cadastro' element={<Auth type="cadastro" />} />
           </Route>
         </Routes>
       </Router>
+
     </Provider>
   )
 }
