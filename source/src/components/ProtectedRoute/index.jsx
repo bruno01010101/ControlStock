@@ -25,5 +25,5 @@ export default function ProtectedRoute() {
         return <Outlet />;
     }
 
-    return <Navigate to="/login" />;
+    return <Navigate to="/auth/login" />;
 }

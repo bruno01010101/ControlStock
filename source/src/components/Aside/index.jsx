@@ -1,6 +1,6 @@
 import styles from './aside.module.css';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { RiDashboardFill } from "react-icons/ri";
 import { FiBox } from "react-icons/fi";
 import { BsBoxArrowDown,BsBoxArrowInUp  } from "react-icons/bs";
@@ -8,8 +8,18 @@ import { TiClipboard } from "react-icons/ti";
 import Avatar from '@mui/material/Avatar';
 import MoreButton from '../moreButton';
 import { CiCircleQuestion } from "react-icons/ci";
+import { logout } from '../../supabase/storageFunctions';
 
 export default function Aside() {
+  const navigate = useNavigate();
+  const signOut = async () => {
+    const {error} = await logout()
+    if(error){
+      console.warn(error)
+      return null
+    }
+    navigate('/auth/login');
+  }
   return (
     <aside className={styles.aside}>
       <section className={styles.menu}>
@@ -68,7 +78,7 @@ export default function Aside() {
             <p style={{ fontSize: '0.750rem', color: 'var(--primary-text-color)' }}>função</p>
           </div>
           <span className={styles.moreButton}>
-            <MoreButton options={["Configurações", "Sair"]} click={[]} />
+            <MoreButton options={["Configurações", "Sair"]} click={['', signOut]} />
           </span>
         </div>
       </section>

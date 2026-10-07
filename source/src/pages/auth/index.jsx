@@ -7,16 +7,19 @@ export default function Auth({ type }) {
   const url = type === 'login' ? '/auth/cadastro' : '/auth/login'
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [org, setOrg] = useState('');
+  const [creatingOrg, setCreatingOrg] = useState(true);
+
   const navigate = useNavigate()
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (type === 'login') {
       await Logar(email, senha)
       navigate('/itens')
     }
-    else if (type === 'cadastro'){
-      Cadastrar(email, senha)
+    else if (type === 'cadastro') {
+      Cadastrar(email, senha, creatingOrg, org)
       navigate('/auth/login')
     }
   }
@@ -35,9 +38,36 @@ export default function Auth({ type }) {
         <p className={styles.p}>{type === 'login' ? 'Entre na sua' : 'Crie uma'} conta para gerenciar seu estoque</p>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="" placeholder='seuemail@empresa.com' value={email} onChange={(v) => setEmail(v.target.value)}/>
+          <input type="email" name="email" id="" placeholder='seuemail@empresa.com' value={email} onChange={(v) => setEmail(v.target.value)} />
           <label htmlFor="email">Senha</label>
-          <input type="password" name="senha" id="" placeholder='Digite sua senha'value={senha} onChange={(v) => setSenha(v.target.value)} />
+          <input type="password" name="senha" id="" placeholder='Digite sua senha' value={senha} onChange={(v) => setSenha(v.target.value)} />
+          {type === 'cadastro' && (
+            <>
+              <div style={{ display: 'flex', justifyContent: "space-between" }}>
+
+                <label htmlFor="text">Organização</label>
+                <button
+                  type="button"
+                  onClick={() => setCreatingOrg((prev) => !prev)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    marginTop: 4,
+                    fontSize: 12,
+                    color: "#2563eb",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                >
+                  {creatingOrg ? "Já tenho um código de organização" : "Criar uma nova organização"}
+                </button>
+              </div>
+
+
+              <input type="text" name="text" id="" placeholder={creatingOrg ? "Criar uma nova organização" : "Dígite o código da sua organização"} value={org} onChange={(v) => setOrg(v.target.value)} />
+            </>
+          )}
           <p className={styles.blue}>Esqueci minha senha</p>
           <input type="submit" value={type === 'login' ? 'Entrar' : 'Cadastrar'} className={styles.button} />
         </form>
