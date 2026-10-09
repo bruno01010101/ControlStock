@@ -16,9 +16,9 @@
 
 @media screen and (max-width: 1380px) and (min-width: 1151px) {
     .aside{
-        width: 20%;
+        width: 16%;
     }
-    .content{width: 78%}
+    .content{width: 84%}
 }
 
 @media screen and (max-width: 1150px) {

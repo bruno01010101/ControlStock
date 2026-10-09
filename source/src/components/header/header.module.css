@@ -1,0 +1,20 @@
+.header {
+    display: flex;
+    padding: 1.2rem;
+    line-height: 1.5;
+    background-color: white;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.0rem;
+}
+
+.subtitle {
+    font-size: 0.875rem;
+    color: var(--secondary-text-color);
+}
+
+.h1{
+    font-size: 1rem;
+
+}

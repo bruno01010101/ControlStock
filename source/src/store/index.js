@@ -1,7 +1,8 @@
 import {configureStore} from '@reduxjs/toolkit';
+import organizacaoReducer from './slices/organizacaoSlice';
 
 export const store = configureStore({
   reducer: {
-    // Adicione seus reducers aqui
+    organizacao: organizacaoReducer
   },
 });

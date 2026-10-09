@@ -1,6 +1,6 @@
 import styles from "./textoSitaucao.module.css";
 
-export default function TextoSitaucao({ situacao, text }) {
+export default function TextoSitaucao({ situacao = 'bom', text }) {
     let cor = null;
     if(situacao === "mid"){
         cor = "#f39d2c";
@@ -13,7 +13,7 @@ export default function TextoSitaucao({ situacao, text }) {
     return (
     <div className={styles[situacao]}>
         <div className={styles.circle} style={{backgroundColor: cor}}></div>
-        <p  >
+        <p>
             {text}
         </p>
     </div>

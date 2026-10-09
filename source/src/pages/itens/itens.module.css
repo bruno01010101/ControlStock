@@ -1,18 +1,3 @@
-.header {
-    display: flex;
-    padding: 1.2rem;
-    line-height: 1.5;
-    background-color: white;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.subtitle {
-    font-size: 0.875rem;
-    color: var(--secondary-text-color);
-}
-
 .content {
     display: flex;
     justify-content: center;
@@ -66,7 +51,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-auto-rows: 50px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.9rem;
     font-size: 0.875rem;
     border-bottom: 1px solid var(--border-color);
     align-items: center;
@@ -115,5 +100,14 @@
     .lateral{
         flex-direction: row;
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 1380Px) and (min-width: 1151px){
+    .lateral{
+        width: 350px;
+    }
+    .produto, .data{
+        font-size: 0.8rem;
     }
 }

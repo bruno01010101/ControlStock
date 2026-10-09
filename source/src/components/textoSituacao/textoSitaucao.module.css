@@ -1,7 +1,7 @@
 .ruim, .bom, .mid{
     border-radius: 10px;
-    width: 50%;
-    height: fit-content;
+    width: fit-content;
+    padding: 3% 6px;
     text-align: center;
     font-weight: 500;
     display: flex;
@@ -11,7 +11,6 @@
 }
 
 .ruim{
-    font-size: 0.875rem;
     color: oklch(63.7% 0.237 25.331);
     background-color: oklch(88.5% 0.062 18.334);
 }
@@ -23,13 +22,11 @@
 }
 
 .bom{
-    font-size: 0.875rem;
     color: oklch(53.81% 0.15405 148.442);
     background-color: oklch(92.5% 0.084 155.995);
 }
 
 .mid{
-    font-size: 0.875rem;
     color: #f39d2c;
     background-color: #fff5df;
 }

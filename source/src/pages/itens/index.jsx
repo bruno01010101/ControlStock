@@ -8,27 +8,28 @@ import ItensBaixoEstoque from '../../components/ItensBaixoEstoque';
 import { FaUpRightFromSquare } from "react-icons/fa6";
 import MoreButton from '../../components/moreButton';
 import TextoSitaucao from '../../components/textoSituacao';
-import Paginacao from '../../components/Paginacao';
+import Pagination from '../../components/Paginacao';
 import { LuClockArrowDown } from "react-icons/lu";
 import { PiArrowSquareUpRightFill } from "react-icons/pi";
+import { useState } from 'react';
+import { PageHeader } from '../../components/header';
 
 export default function Itens() {
+  const [page, setPage] = useState(1);
+
   return (
     <>
-      <header className={styles.header}>
-        <div>
-          <h1>Itens</h1>
-          <p className={styles.subtitle}>Gerencie produtos, quantidades e movimentações do estoque</p>
-        </div>
-        <div className={styles.actions}>
-          <Button variant="outlined" color="primary" size="small" startIcon={<CiExport />} sx={{ textTransform: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderColor: 'var(--secondary-text-color)', color: 'var(--primary-text-color)' }}>
-            Exportar itens
-          </Button>
-          <Button variant="contained" color="primary" size="small" startIcon={<IoMdAdd />} sx={{ textTransform: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', backgroundColor: 'var(--azul)', marginLeft: '1rem' }}>
-            Adicionar Item
-          </Button>
-        </div>
-      </header>
+      <PageHeader
+        title="Itens"
+        subtitle="Gerencie produtos, quantidades e movimentações do estoque">
+
+        <Button variant="outlined" color="primary" size="small" startIcon={<CiExport />} sx={{ textTransform: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderColor: 'var(--secondary-text-color)', color: 'var(--primary-text-color)' }}>
+          Exportar itens
+        </Button>
+        <Button variant="contained" color="primary" size="small" startIcon={<IoMdAdd />} sx={{ textTransform: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', backgroundColor: 'var(--azul)', marginLeft: '1rem' }}>
+          Adicionar Item
+        </Button>
+      </PageHeader>
 
       <section className={styles.content}>
         <section className={styles.itens}>
@@ -76,9 +77,11 @@ export default function Itens() {
               <TextoSitaucao text="Testando" situacao="ruim" />
               <MoreButton options={["Entrada", "Saída"]} />
             </div>
-            <Paginacao text="estamos na página 2-10" totalPáginas={10} />
+            <div style={{ padding: "10px" }}>
+              <Pagination page={page} totalPages={10} onPageChange={setPage} />
+            </div>
           </div>
-        
+
         </section>
 
         <section className={styles.lateral}>
@@ -87,7 +90,7 @@ export default function Itens() {
           </div>
           <div className={styles.movimentacoes}>
             <div className={styles.flex}>
-              <div style={{paddingBottom: "1rem"}}>
+              <div style={{ paddingBottom: "1rem" }}>
                 <h2 className={styles.h2}>Últimas movimentações</h2>
                 <p className={styles.subtitle}>Atualizado Agora</p>
               </div>
@@ -95,8 +98,8 @@ export default function Itens() {
             </div>
             <div className={styles.movimentation}>
               <div className={styles.flex}>
-                <div className={styles.flex} style={{gap: "5px"}}>
-                  <PiArrowSquareUpRightFill color='green'/>
+                <div className={styles.flex} style={{ gap: "5px" }}>
+                  <PiArrowSquareUpRightFill color='green' />
                   <p>Café Especial 500g</p>
                 </div>
                 <p className={styles.entry}>+24</p>

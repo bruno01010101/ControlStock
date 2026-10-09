@@ -25,7 +25,7 @@ export default function Aside() {
       <section className={styles.menu}>
         <div className={styles.menuHeader}>
           <img src="/favicon.svg" alt="ControlStock Logo" className={styles.logo} />
-          <div className>
+          <div>
             <h2>
               Control Stock
             </h2>

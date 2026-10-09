@@ -1,0 +1,14 @@
+/* Mobile: seletores empilhados. Desktop: lado a lado, dividindo a largura igualmente. */
+.filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .filtros {
+    flex-direction: row;
+    gap: 1.25rem;
+  }
+}

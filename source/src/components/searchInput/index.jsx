@@ -4,8 +4,6 @@ import { IoSearch } from "react-icons/io5";
 
 export default function SearchInput({text, onChange, placeholder}) {
     const [valor, setValor] = useState(text || '');
-    console.log(valor);
-
     return (
         <div className={styles.searchInput}>
             <IoSearch color="#6B7280" />

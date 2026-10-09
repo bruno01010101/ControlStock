@@ -1,0 +1,84 @@
+/* Container: texto + botões.
+   Mobile: um embaixo do outro, centralizados.
+   Desktop (>= 600px): lado a lado, texto à esquerda e botões à direita. */
+.pagination-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+ 
+.pagination__info {
+  margin: 0;
+  font-size: 12px;
+  color: #475569;
+  text-align: center;
+}
+ 
+.pagination__info strong {
+  color: #2563eb;
+  font-weight: 600;
+}
+ 
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+ 
+.pagination__btn {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+  background: #fff;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+ 
+.pagination__btn:hover {
+  background: #dbeafe;
+}
+ 
+.pagination__btn:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+ 
+.pagination__btn--active {
+  background: #2563eb;
+  color: #fff;
+  cursor: default;
+}
+ 
+.pagination__btn--active:hover {
+  background: #2563eb;
+}
+ 
+.pagination__arrow {
+  font-size: 16px;
+  line-height: 1;
+}
+ 
+@media (min-width: 600px) {
+  .pagination-wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 16px;
+  }
+ 
+  .pagination__info {
+    font-size: 13px;
+    text-align: left;
+  }
+ 
+  .pagination__btn {
+    min-width: 32px;
+    height: 32px;
+  }
+}

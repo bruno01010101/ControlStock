@@ -30,6 +30,7 @@
     color: var(--primary-text-color);
     padding: 0.5rem;
     border-radius: 0.5rem;
+    font-size: 1rem;
     transition: background-color 0.3s ease-in-out;
 }
 
@@ -64,4 +65,5 @@
         align-self: flex-start;
     }
     .oi{display: none;}
+    .menuItem{font-size: 0.9rem;}
 }
