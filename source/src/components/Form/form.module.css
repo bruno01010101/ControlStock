@@ -1,0 +1,201 @@
+/* ---------- Centralização ---------- */
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background: #f5f5f5;
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  display: block;
+  height: 64px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ---------- Card ---------- */
+.card {
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo {
+  margin: 0;
+  font-weight: 700;
+  color: #000;
+}
+
+.subtitulo {
+  margin: 6px 0 0;
+  color: #374151;
+}
+
+/* ---------- Campos ---------- */
+.campos {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  color: #000;
+  font-weight: 500;
+}
+
+.campo input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  color: #111;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.campo input::placeholder {
+  color: #6b7280;
+}
+
+.campo input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ---------- Extra (links, etc.) ---------- */
+.extra {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  font-size: 15px;
+}
+
+.extra a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.extra a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Botão ---------- */
+.botao {
+  width: 100%;
+  height: 42px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.botao:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- SMALL (igual ao login) ---------- */
+.small .card {
+  max-width: 500px;
+  padding: 32px 31px 48px;
+}
+
+.small .titulo {
+  font-size: 28px;
+}
+
+.small .subtitulo {
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.small .campos {
+  gap: 14px;
+}
+
+.small .campo {
+  gap: 10px;
+  font-size: 16px;
+}
+
+/* ---------- LARGE ---------- */
+.large .card {
+  max-width: 760px;
+  padding: 48px 48px 56px;
+}
+
+.large .titulo {
+  font-size: 34px;
+}
+
+.large .subtitulo {
+  font-size: 17px;
+  margin-bottom: 32px;
+}
+
+/* duas colunas; use full: true no campo para ocupar a linha toda */
+.large .campos {
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+.large .campo {
+  gap: 10px;
+  font-size: 17px;
+}
+
+.large .campo input {
+  height: 48px;
+  font-size: 14px;
+}
+
+.large .botao {
+  height: 48px;
+  font-size: 15px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .large .campos {
+    grid-template-columns: 1fr;
+  }
+
+  .large .card {
+    padding: 32px 24px 40px;
+  }
+}

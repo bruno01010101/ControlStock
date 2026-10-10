@@ -9,6 +9,7 @@ import Main from './components/Main';
 import Dashboard from './pages/dashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
 import ProtectedRoute from './components/ProtectedRoute';
+import Unidade from './pages/unidade';
 
 function App() {
 
@@ -23,7 +24,13 @@ function App() {
               <Route path="itens" element={<Itens />} />
               <Route path="pedidos" element={<Pedidos />} />
               <Route path="saidas" element={<Saidas />} />
-              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="" element={<Dashboard />} />
+              <Route path='form' element={<Auth type="form" />} />
+            </Route>
+            <Route path='/form'>
+              <Route path='unidade' element={<Unidade />} />
+              
+
             </Route>
           </Route>
           <Route path='/auth/'  >

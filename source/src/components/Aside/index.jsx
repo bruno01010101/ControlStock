@@ -37,7 +37,7 @@ export default function Aside() {
         <div className={styles.menuItems}>
           <div>
               <p className="menuTitle">MENU</p>
-            <Link to="/dashboard" className={styles.menuItem}>
+            <Link to="/" className={styles.menuItem}>
               <RiDashboardFill />
               Dashboard
             </Link>
