@@ -2,6 +2,38 @@
     display: flex;
     flex-direction: column;
     padding: 1.6rem;
-    gap: 1.2rem;
+    gap: 1.5rem;
     width: 100%;
+}
+
+.item{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+}
+
+.figure{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.emphasis{
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.p{
+    font-size: 0.875rem;
+  color: var(--secondary-text-color);
+}
+
+.section{
+    display: flex;
+    gap: 20px;
 }

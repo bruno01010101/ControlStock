@@ -4,35 +4,27 @@ import Button from '@mui/material/Button';
 import { CiExport } from "react-icons/ci";
 import { useState } from 'react';
 import DashboardFiltros from '../../components/dashboardFiltros/DashboardFiltros';
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrganizacaoPadrao } from '../../store/slices/organizacaoSlice';
-import { selectOrganizacao, setOrganizacao, selectOrganizacaoCodigo } from '../../store/slices/organizacaoSlice';
+import { selectOrganizacao, setOrganizacao } from '../../store/slices/organizacaoSlice';
 import { useNavigate } from 'react-router';
-import { fetchUnidades } from '../../store/slices/unidadesSlice';
 import EstadoVazio from '../../components/EstadoVazio/EstadoVazio';
+import { PiNotebook } from "react-icons/pi";
+import ItensBaixoEstoque from '../../components/ItensBaixoEstoque';
+import { selecionarUnidade, fetchUnidades, selectListaUnidades, selectUnidadeSelecionadaId } from '../../store/slices/unidadesSlice';
+import { selectOrganizacaoCodigo } from "../../store/slices/organizacaoSlice";
 
 export default function Dashboard() {
-  const { codigo, nome } = useSelector(selectOrganizacao);
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+
   const codigoOrganizacao = useSelector(selectOrganizacaoCodigo);
+  const unidades = useSelector(selectListaUnidades);
+  const unidadeSelecionadaId = useSelector(selectUnidadeSelecionadaId);
 
-  const unidades = useSelector((state) => state.unidades.lista);
+  const { codigo, nome } = useSelector(selectOrganizacao);
 
-  const [unidade, setUnidade] = useState("aaaaaaa");
   const [periodo, setPeriodo] = useState("30d");
   const organizacoes = codigo ? [{ value: codigo, label: nome }] : [];
-
-  
-  const navigate = useNavigate()
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchOrganizacaoPadrao());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (codigoOrganizacao) dispatch(fetchUnidades());
-  }, [dispatch, codigoOrganizacao]);
 
   return (
     <>
@@ -48,11 +40,26 @@ export default function Dashboard() {
           organizacao={codigo ?? ""}
           onOrganizacaoChange={(value) => {
             const org = organizacoes.find((o) => o.value === value);
-            if (org) dispatch(setOrganizacao({ codigo: org.value, nome: org.label }));
+
+            if (org) {
+              dispatch(setOrganizacao({
+                codigo: org.value,
+                nome: org.label,
+              }));
+            }
           }}
-          unidades={unidades.map((u) => ({ value: u.id, label: u.nome }))}
-          unidade={unidade}
-          onUnidadeChange={setUnidade}
+          unidades={unidades.map((u) => ({
+            value: String(u.id),
+            label: u.nome,
+          }))}
+          unidade={
+            unidadeSelecionadaId == null
+              ? ""
+              : String(unidadeSelecionadaId)
+          }
+          onUnidadeChange={(value) => {
+            dispatch(selecionarUnidade(value));
+          }}
           periodo={periodo}
           onPeriodoChange={setPeriodo}
         />
@@ -63,7 +70,27 @@ export default function Dashboard() {
             textoBotao="Criar unidade"
           />
         ) : (
-          <p>oi</p>
+          <section className={styles.section}>
+            <div className={styles.item} style={{ width: '50%' }}>
+              <div className={styles.figure}>
+                <p className={styles.p}>Total gasto no período</p>
+                <PiNotebook color='blue' />
+              </div>
+              <p className={styles.emphasis}>R$ 48.240,00</p>
+              <p className={styles.p}>compras recebidas janeiro a julho de 2026</p>
+            </div>
+            <div className={styles.item} style={{ width: '25%' }}>
+              <div className={styles.figure}>
+                <p className={styles.p}>Itens cadastrados</p>
+                <PiNotebook color='blue' />
+              </div>
+              <p className={styles.emphasis}>128</p>
+              <p className={styles.p}>Em todas as unidades</p>
+            </div>
+            <div style={{ width: '25%' }}>
+              <ItensBaixoEstoque quantidade={6} />
+            </div>
+          </section>
         )}
       </div>
     </>

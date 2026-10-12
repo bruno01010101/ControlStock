@@ -9,7 +9,8 @@ import Main from './components/Main';
 import Dashboard from './pages/dashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
 import ProtectedRoute from './components/ProtectedRoute';
-import Unidade from './pages/unidade';
+import Unidade from './pages/forms/unidade';
+import AdicionarItem from './pages/forms/adicionarItem';
 
 function App() {
 
@@ -29,7 +30,7 @@ function App() {
             </Route>
             <Route path='/form'>
               <Route path='unidade' element={<Unidade />} />
-              
+              <Route path='adicionarItem' element={<AdicionarItem />} />
 
             </Route>
           </Route>

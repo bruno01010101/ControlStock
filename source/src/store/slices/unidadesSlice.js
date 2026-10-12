@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { supabase } from "../../supabase"; 
+import { supabase } from "../../supabase";
 import { selectOrganizacaoCodigo } from "./organizacaoSlice"; // ajuste o caminho
 
 /**
@@ -48,6 +48,7 @@ const initialState = {
   lista: [],
   status: "idle", // idle | loading | succeeded | failed  (busca)
   statusCriacao: "idle", // idle | loading | succeeded | failed  (cadastro)
+  unidadeSelecionadaId: null, // id da unidade vigente (padrão: a primeira da lista)
   erro: null,
 };
 
@@ -57,6 +58,19 @@ const unidadesSlice = createSlice({
   reducers: {
     limparErro(state) {
       state.erro = null;
+    },
+    // recebe o id da unidade (aceita string, pois selects devolvem texto)
+    selecionarUnidade(state, action) {
+      if (action.payload === "" || action.payload == null) return;
+
+      const id = Number(action.payload);
+
+      if (
+        Number.isFinite(id) &&
+        state.lista.some((u) => u.id === id)
+      ) {
+        state.unidadeSelecionadaId = id;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -69,6 +83,14 @@ const unidadesSlice = createSlice({
       .addCase(fetchUnidades.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.lista = action.payload;
+
+        // mantém a selecionada se ela ainda existe; senão, usa a primeira
+        const aindaExiste = state.lista.some(
+          (u) => u.id === state.unidadeSelecionadaId
+        );
+        if (!aindaExiste) {
+          state.unidadeSelecionadaId = state.lista[0]?.id ?? null;
+        }
       })
       .addCase(fetchUnidades.rejected, (state, action) => {
         state.status = "failed";
@@ -83,6 +105,11 @@ const unidadesSlice = createSlice({
       .addCase(criarUnidade.fulfilled, (state, action) => {
         state.statusCriacao = "succeeded";
         state.lista.push(action.payload);
+
+        // primeira unidade criada vira a selecionada
+        if (state.unidadeSelecionadaId === null) {
+          state.unidadeSelecionadaId = action.payload.id;
+        }
       })
       .addCase(criarUnidade.rejected, (state, action) => {
         state.statusCriacao = "failed";
@@ -91,5 +118,20 @@ const unidadesSlice = createSlice({
   },
 });
 
-export const { limparErro } = unidadesSlice.actions;
+export const { limparErro, selecionarUnidade } = unidadesSlice.actions;
 export default unidadesSlice.reducer;
+
+/* ------------------------------ Selectors ------------------------------ */
+
+/** id da unidade vigente (ou null se não houver unidades). */
+export const selectUnidadeSelecionadaId = (state) =>
+  state.unidades.unidadeSelecionadaId;
+
+/** objeto completo da unidade vigente ({ id, nome, ... }) ou null. */
+export const selectUnidadeSelecionada = (state) =>
+  state.unidades.lista.find(
+    (u) => u.id === state.unidades.unidadeSelecionadaId
+  ) ?? null;
+
+  export const selectListaUnidades = (state) =>
+  state.unidades.lista;

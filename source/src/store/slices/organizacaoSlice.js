@@ -79,11 +79,19 @@ const organizacaoSlice = createSlice({
 });
 
 export const { setOrganizacao, clearOrganizacao } = organizacaoSlice.actions;
+const emAndamento = (status) => status === "idle" || status === "loading";
 
 // Selectors
 export const selectOrganizacao = (state) => state.organizacao;
 export const selectOrganizacaoCodigo = (state) => state.organizacao.codigo;
 export const selectOrganizacaoNome = (state) => state.organizacao.nome;
 export const selectOrganizacaoStatus = (state) => state.organizacao.status;
+export const selectCarregandoInicial = (state) => {
+  const org = state.organizacao.status; // ajuste para o nome real no seu slice
+  const uni = state.unidades.status;
+  const itens = state.itens.status;
+
+  return emAndamento(org) || (org === "succeeded" && (emAndamento(uni) || emAndamento(itens)))
+};
 
 export default organizacaoSlice.reducer;
