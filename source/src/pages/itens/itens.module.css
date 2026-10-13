@@ -93,6 +93,8 @@
     color: oklch(53.81% 0.15405 148.442);
 }
 
+.paginacao{padding: 10px 10px 0px 10px;}
+
 @media screen and (max-width: 1150px) {
     .content{
         flex-wrap: wrap;

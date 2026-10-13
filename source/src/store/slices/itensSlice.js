@@ -89,6 +89,58 @@ export const criarItem = createAsyncThunk(
   }
 );
 
+export const criarEntrada = createAsyncThunk(
+  "itens/criarEntrada",
+  async (
+    { nome_solicitante, setor_solicitante, data_solicitacao, unidade, itens },
+    { getState, rejectWithValue }
+  ) => {
+    const codigo_organizacao = selectOrganizacaoCodigo(getState());
+    if (!codigo_organizacao) return rejectWithValue("Organização não carregada");
+
+    const { data, error } = await supabase.rpc("criar_entrada", {
+      p_nome_solicitante: nome_solicitante,
+      p_setor_solicitante: setor_solicitante || null, // opcional
+      p_data_solicitacao: data_solicitacao,
+      p_unidade: Number(unidade),
+      p_codigo_organizacao: codigo_organizacao,
+      p_itens: itens.map((i) => ({
+        item_id: i.item_id,
+        quantidade: Number(i.quantidade),
+      })),
+    });
+
+    if (error) return rejectWithValue(error.message);
+    return data; // id da entrada criada
+  }
+);
+
+export const criarSaida = createAsyncThunk(
+  "itens/criarSaida",
+  async (
+    { nome_solicitante, setor_solicitante, data_solicitacao, unidade, itens },
+    { getState, rejectWithValue }
+  ) => {
+    const codigo_organizacao = selectOrganizacaoCodigo(getState());
+    if (!codigo_organizacao) return rejectWithValue("Organização não carregada");
+
+    const { data, error } = await supabase.rpc("criar_saida", {
+      p_nome_solicitante: nome_solicitante,
+      p_setor_solicitante: setor_solicitante || null,
+      p_data_solicitacao: data_solicitacao,
+      p_unidade: Number(unidade),
+      p_codigo_organizacao: codigo_organizacao,
+      p_itens: itens.map((i) => ({
+        item_id: i.item_id,
+        quantidade: Number(i.quantidade),
+      })),
+    });
+
+    if (error) return rejectWithValue(error.message);
+    return data; // id da saída criada
+  }
+);
+
 const initialState = {
   lista: [],
   status: "idle", // idle | loading | succeeded | failed  (busca)
@@ -132,6 +184,18 @@ const itensSlice = createSlice({
       .addCase(criarItem.rejected, (state, action) => {
         state.statusCriacao = "failed";
         state.erro = action.payload ?? action.error.message;
+      })
+      .addCase(criarEntrada.fulfilled, (state, action) => {
+        action.meta.arg.itens.forEach(({ item_id, quantidade }) => {
+          const item = state.lista.find((i) => String(i.id) === String(item_id));
+          if (item) item.quantidade += Number(quantidade);
+        });
+      })      // ----- saída: espelha no Redux o que o trigger subtraiu no banco -----
+      .addCase(criarSaida.fulfilled, (state, action) => {
+        action.meta.arg.itens.forEach(({ item_id, quantidade }) => {
+          const item = state.lista.find((i) => String(i.id) === String(item_id));
+          if (item) item.quantidade -= Number(quantidade);
+        });
       });
   },
 });

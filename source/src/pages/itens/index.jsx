@@ -23,9 +23,11 @@ export default function Itens() {
 
   const itens = useSelector((state) => selectItensDaUnidade(state, unidadeSel));
   function situacaoDoItem({ quantidade, estoque_minimo }) {
-    if (quantidade <= 0) return { text: "Sem estoque", situacao: "ruim" };
     if (quantidade <= estoque_minimo)
-      return { text: "Estoque baixo", situacao: "medio" };
+      return { text: "Estoque baixo", situacao: "ruim" };
+    if(quantidade <= (estoque_minimo * 0.2) + estoque_minimo){
+      return {text: "Estoque medio", situacao: "mid"}
+    }
     return { text: "Em estoque", situacao: "bom" };
   }
 
@@ -86,12 +88,14 @@ export default function Itens() {
                     <p>{item.categoria ?? "—"}</p>
                     <p>{item.quantidade}</p>
                     <TextoSitaucao text={text} situacao={situacao} />
-                    <MoreButton options={["Entrada", "Saída"]} />
+                    <MoreButton options={["Entrada", "Saída"]} click={[() => {navigate(`/form/entrada/${item.id}`)}, () => {navigate(`/form/saida/${item.id}`)}]} />
                   </div>
                 );
               })}
             </div>
-
+              <div className={styles.paginacao}>
+                <Pagination page="1" totalPages="5" />
+              </div>
           </section>
 
           <section className={styles.lateral}>
@@ -119,7 +123,7 @@ export default function Itens() {
                   <p className='menuTitle'>Hoje, 9:18</p>
                 </div>
               </div>
-
+              
             </div>
           </section>
         </section>
