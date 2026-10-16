@@ -53,6 +53,42 @@ export const fetchItens = createAsyncThunk(
   }
 );
 
+const TABELAS = {
+  entrada: { tabelaItens: "itens_entradas", cabecalho: "entradas" },
+  saida: { tabelaItens: "itens_saidas", cabecalho: "saidas" },
+};
+
+export async function buscarMovimentacoes({ tipo, codigoOrganizacao, limite }) {
+  const { tabelaItens, cabecalho } = TABELAS[tipo];
+
+  let query = supabase
+    .from(tabelaItens)
+    .select(
+      `id, created_at, quantidade,
+       item:itens ( nome ),
+       ${cabecalho}!inner ( unidade, setor_solicitante, nome_solicitante, organizacao_codigo )`
+    )
+    .eq(`${cabecalho}.organizacao_codigo`, codigoOrganizacao) // !inner + eq filtra pela organização
+    .order("created_at", { ascending: false });
+
+  if (limite) query = query.limit(limite);
+
+  const { data, error } = await query;
+  if (error) throw error;
+
+  return data.map((linha) => {
+    const mov = linha[cabecalho];
+    return {
+      id: linha.id,
+      produto: linha.item?.nome ?? "—",
+      quantidade: linha.quantidade,
+      criadoEm: linha.created_at,
+      unidadeId: mov.unidade,
+      origem: mov.setor_solicitante ?? "—",
+    };
+  });
+}
+
 /**
  * Cadastra um item. id e created_at são gerados pelo banco.
  * A quantidade sempre começa em 0 (a entrada no estoque vem depois).
@@ -141,6 +177,23 @@ export const criarSaida = createAsyncThunk(
   }
 );
 
+export async function excluirPorId(id) {
+  const { error } = await supabase.from(TABELA).delete().eq("id", id);
+  if (error) throw error;
+}
+
+export const excluirItem = createAsyncThunk(
+  "itens/excluirItem",
+  async (id, { rejectWithValue }) => {
+    try {
+      await excluirPorId(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   lista: [],
   status: "idle", // idle | loading | succeeded | failed  (busca)
@@ -196,7 +249,13 @@ const itensSlice = createSlice({
           const item = state.lista.find((i) => String(i.id) === String(item_id));
           if (item) item.quantidade -= Number(quantidade);
         });
-      });
+      })// ----- excluir -----
+      .addCase(excluirItem.fulfilled, (state, action) => {
+        state.lista = state.lista.filter((i) => String(i.id) !== String(action.payload));
+      })
+      .addCase(excluirItem.rejected, (state, action) => {
+        state.erro = action.payload ?? action.error.message;
+      })
   },
 });
 

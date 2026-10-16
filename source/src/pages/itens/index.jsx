@@ -16,8 +16,10 @@ import { PageHeader } from '../../components/header';
 import EstadoVazio from '../../components/EstadoVazio/EstadoVazio';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { selectItensDaUnidade } from '../../store/slices/itensSlice';
+import { selectItensDaUnidade, excluirItem } from '../../store/slices/itensSlice';
 import ItemCard from '../../components/itemCard';
+import { useDispatch } from 'react-redux';
+import UltimasMovimentacoes from '../../components/movimentacoes';
 
 function situacaoDoItem({ quantidade, estoque_minimo }) {
   if (quantidade <= estoque_minimo)
@@ -33,6 +35,7 @@ export default function Itens() {
   const unidadeSel = useSelector((state) => state.unidades.unidadeSelecionadaId);
   const [situacao, setSituacao] = useState("");
   const itens = useSelector((state) => selectItensDaUnidade(state, unidadeSel));
+  const dispatch = useDispatch()
 
   const ITENS_POR_PAGINA = 10;
   const unidades = useSelector((state) => state.unidades.lista)
@@ -88,6 +91,11 @@ export default function Itens() {
     setPaginaState({ unidade: unidadeSel, page: 1 }); // volta para a página 1
   }
 
+  const handleExcluir = async (item) => {
+    if (!window.confirm(`Excluir "${item.nome}" e todo o histórico dele?`)) return;
+    await dispatch(excluirItem(item.id)).unwrap();
+  };
+
   return (
     <>
       <PageHeader
@@ -139,14 +147,15 @@ export default function Itens() {
                   <div key={item.id} className={styles.produto}>
                     <div className={styles.greed}>
 
-                        <ItemCard key={item.id} item={item} />
+                      <ItemCard key={item.id} item={item} />
 
                     </div>
                     <p>{item.codigo ?? "—"}</p>
                     <p>{item.categoria ?? "—"}</p>
                     <p><strong>{item.quantidade}</strong> {item.unidade_de_medida}</p>
                     <TextoSitaucao text={text} situacao={situacao} />
-                    <MoreButton options={["Entrada", "Saída"]} click={[() => { navigate(`/form/entrada/${item.id}`) }, () => { navigate(`/form/saida/${item.id}`) }]} />
+                    <MoreButton options={["Entrada", "Saída", "Excluir item"]}
+                      click={[() => { navigate(`/form/entrada/${item.id}`) }, () => { navigate(`/form/saida/${item.id}`) }, () => { handleExcluir(item) }]} />
                   </div>
                 );
               }))}
@@ -160,29 +169,7 @@ export default function Itens() {
             <div style={{ height: "150px" }}>
               <ItensBaixoEstoque quantidade={6} />
             </div>
-            <div className={styles.movimentacoes}>
-              <div className={styles.flex}>
-                <div style={{ paddingBottom: "1rem" }}>
-                  <h2 className={styles.h2}>Últimas movimentações</h2>
-                  <p className={styles.subtitle}>Atualizado Agora</p>
-                </div>
-                <LuClockArrowDown />
-              </div>
-              <div className={styles.movimentation}>
-                <div className={styles.flex}>
-                  <div className={styles.flex} style={{ gap: "5px" }}>
-                    <PiArrowSquareUpRightFill color='green' />
-                    <p>Café Especial 500g</p>
-                  </div>
-                  <p className={styles.entry}>+24</p>
-                </div>
-                <div className={styles.flex}>
-                  <p className='menuTitle'>Entrada . Pedido#284</p>
-                  <p className='menuTitle'>Hoje, 9:18</p>
-                </div>
-              </div>
-
-            </div>
+            <UltimasMovimentacoes direction='column' />
           </section>
         </section>
       )}
