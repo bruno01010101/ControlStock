@@ -1,0 +1,265 @@
+/* ===== Cole no FINAL do Pedidos.module.css ===== */
+
+/* Card "Novo pedido" */
+.novoPedido {
+    --azul: #2563eb;
+    --azul-escuro: #1d4ed8;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.pagina {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1.6rem;
+    width: 100%;
+    max-width: 75rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.pedidos {
+    flex: 0 0 60%;
+    min-width: 0;
+}
+
+.formCabecalho {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.formTitulo {
+    font-size: 1.05rem;
+    color: var(--primary-text-color);
+}
+
+.formCorpo {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+}
+
+.secao {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.secao + .secao {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.linhaDupla {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.linhaItem {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 0.75rem;
+}
+
+/* Campos */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+}
+
+.rotulo {
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+}
+
+.input {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    font: inherit;
+    font-size: 0.875rem;
+    color: var(--primary-text-color);
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 0.4rem;
+}
+
+.input:focus-visible {
+    outline: 2px solid var(--azul);
+    outline-offset: -1px;
+    border-color: var(--azul);
+}
+
+/* [readonly] e não :read-only, porque :read-only também pega os <select> */
+.input[readonly] {
+    background-color: var(--background-color);
+    color: var(--secondary-text-color);
+}
+
+.selectCampo {
+    padding-right: 2rem;
+    appearance: none;
+    cursor: pointer;
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+}
+
+/* "Selecione um item" em cinza enquanto nada foi escolhido */
+.selectCampo:invalid {
+    color: var(--secondary-text-color);
+}
+
+/* Campo de data com ícone próprio */
+.campoData {
+    position: relative;
+}
+
+.campoData .input {
+    padding-right: 2.5rem;
+}
+
+.campoData .input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.botaoCalendario {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    padding: 0.25rem;
+    color: var(--secondary-text-color);
+    background: none;
+    border: 0;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.botaoCalendario:hover {
+    color: var(--primary-text-color);
+}
+
+/* Itens do pedido */
+.itensCabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.itensTitulo {
+    font-size: 0.875rem;
+    color: var(--primary-text-color);
+}
+
+.ajuda {
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+}
+
+.adicionarItem {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0;
+    font: inherit;
+    font-size: 0.875rem;
+    color: var(--azul);
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.adicionarItem:hover {
+    color: var(--azul-escuro);
+}
+
+/* Rodapé e botões */
+.formRodape {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.botao {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 2.25rem;
+    padding: 0 1rem;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.4rem;
+    cursor: pointer;
+}
+
+.botaoSecundario {
+    color: var(--primary-text-color);
+    background-color: white;
+    border: 1px solid var(--border-color);
+}
+
+.botaoSecundario:hover {
+    background-color: var(--background-color);
+}
+
+.botaoPrimario {
+    color: white;
+    background-color: var(--azul);
+    border: 1px solid var(--azul);
+}
+
+.botaoPrimario:hover {
+    background-color: var(--azul-escuro);
+    border-color: var(--azul-escuro);
+}
+
+.iconeHistorico {
+    color: var(--secondary-text-color);
+    flex-shrink: 0;
+}
+
+.celula {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.codigo {
+    color: var(--primary-text-color);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.secundario {
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+}
+
+.itemPrincipal {
+    color: var(--primary-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.total {
+    color: var(--primary-text-color);
+    font-weight: 600;
+}

@@ -5,12 +5,9 @@ import { CiExport } from "react-icons/ci";
 import SearchInput from '../../components/searchInput';
 import Selecao from '../../components/selecao';
 import ItensBaixoEstoque from '../../components/ItensBaixoEstoque';
-import { FaUpRightFromSquare } from "react-icons/fa6";
 import MoreButton from '../../components/moreButton';
 import TextoSitaucao from '../../components/textoSituacao';
 import Pagination from '../../components/Paginacao';
-import { LuClockArrowDown } from "react-icons/lu";
-import { PiArrowSquareUpRightFill } from "react-icons/pi";
 import { useState, useMemo } from 'react';
 import { PageHeader } from '../../components/header';
 import EstadoVazio from '../../components/EstadoVazio/EstadoVazio';
@@ -20,6 +17,7 @@ import { selectItensDaUnidade, excluirItem } from '../../store/slices/itensSlice
 import ItemCard from '../../components/itemCard';
 import { useDispatch } from 'react-redux';
 import UltimasMovimentacoes from '../../components/movimentacoes';
+import Tabela from '../../components/card';
 
 function situacaoDoItem({ quantidade, estoque_minimo }) {
   if (quantidade <= estoque_minimo)
@@ -116,54 +114,45 @@ export default function Itens() {
         />
       ) : (
         <section className={styles.content}>
-          <section className={styles.itens}>
-            <div className={styles.filtrosContainer}>
-              <div>
-                <h2 className={styles.h2}>Todos os itens</h2>
-                <p className="menuTitle">x itens cadastrados</p>
-              </div>
-              <div className={styles.filtros}>
-                <SearchInput
-                  placeholder="Buscar itens..."
-                  text={busca}
-                  onChange={handleBusca}
-                />
-                <Selecao value={situacao} onChange={handleSituacao} />
-              </div>
-            </div>
-            <div className={styles.itensContainer}>
-              <div className={styles.data}>
-                <p className={styles.greed} >Produtos</p>
-                <p>Código</p>
-                <p>Categoria</p>
-                <p>Quantidade</p>
-                <p>Situação</p>
-              </div>
-              {itensDaPagina.length === 0 ? (
-                <p>Nenhum item encontrado</p>
-              ) : (itensDaPagina.map((item) => {
+          <Tabela>
+            <Tabela.Cabecalho titulo="Todos os itens" subtitulo={`x itens cadastrados`}>
+              <SearchInput placeholder="Buscar itens..." text={busca} onChange={handleBusca} />
+              <Selecao value={situacao} onChange={handleSituacao} />
+            </Tabela.Cabecalho>
+
+            <Tabela.Colunas nomes={["Produtos", "Código", "Categoria", "Quantidade", "Situação"]} />
+
+            <Tabela.Corpo vazio="Nenhum item encontrado">
+              {itensDaPagina.map((item) => {
                 const { text, situacao } = situacaoDoItem(item);
                 return (
-                  <div key={item.id} className={styles.produto}>
-                    <div className={styles.greed}>
-
-                      <ItemCard key={item.id} item={item} />
-
-                    </div>
+                  <Tabela.Linha
+                    key={item.id}
+                    acao={
+                      <MoreButton
+                        options={["Entrada", "Saída", "Excluir item"]}
+                        click={[
+                          () => navigate(`/form/entrada/${item.id}`),
+                          () => navigate(`/form/saida/${item.id}`),
+                          () => handleExcluir(item),
+                        ]}
+                      />
+                    }
+                  >
+                    <ItemCard item={item} />
                     <p>{item.codigo ?? "—"}</p>
                     <p>{item.categoria ?? "—"}</p>
                     <p><strong>{item.quantidade}</strong> {item.unidade_de_medida}</p>
                     <TextoSitaucao text={text} situacao={situacao} />
-                    <MoreButton options={["Entrada", "Saída", "Excluir item"]}
-                      click={[() => { navigate(`/form/entrada/${item.id}`) }, () => { navigate(`/form/saida/${item.id}`) }, () => { handleExcluir(item) }]} />
-                  </div>
+                  </Tabela.Linha>
                 );
-              }))}
-            </div>
-            <div className={styles.paginacao}>
+              })}
+            </Tabela.Corpo>
+
+            <Tabela.Paginacao>
               <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
-            </div>
-          </section>
+            </Tabela.Paginacao>
+          </Tabela>
 
           <section className={styles.lateral}>
             <div style={{ height: "150px" }}>
