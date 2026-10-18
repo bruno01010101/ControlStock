@@ -1,23 +1,35 @@
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import { useId } from "react";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
-export default function Selecao({ value, onChange }) {
+export default function Selecao({
+  value,
+  onChange,
+  opcoes = [],
+  label = "Filtrar",
+  todos = "Todos",
+}) {
+  // id único, para poder usar mais de um Selecao na mesma tela
+  const id = useId();
+  const labelId = `${id}-label`;
   return (
-    <FormControl fullWidth size="small" sx={{ fontSize: '0.5rem' }}>
-      <InputLabel id="filtro-situacao-label">Filtrar</InputLabel>
+    <FormControl fullWidth size="small" sx={{ fontSize: "0.5rem" }}>
+      <InputLabel id={labelId}>{label}</InputLabel>
       <Select
-        labelId="filtro-situacao-label"
-        id="filtro-situacao"
+        labelId={labelId}
+        id={id}
         value={value}
-        label="Filtrar"
+        label={label}
         onChange={(event) => onChange(event.target.value)}
       >
-        <MenuItem value="">Todos</MenuItem>
-        <MenuItem value="ruim">Estoque baixo</MenuItem>
-        <MenuItem value="mid">Estoque médio</MenuItem>
-        <MenuItem value="bom">Estoque alto</MenuItem>
+        <MenuItem value="">{todos}</MenuItem>
+        {opcoes.map((opcao) => (
+          <MenuItem key={opcao.value} value={opcao.value}>
+            {opcao.label}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

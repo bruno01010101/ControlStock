@@ -129,3 +129,43 @@
     font-size: 0.8rem;
     color: var(--secondary-text-color);
 }
+
+/* ===== Cole no FINAL do Tabela.module.css ===== */
+
+/* Celular: o cabeçalho empilha e cada linha vira um cartão */
+@media (max-width: 640px) {
+    .cabecalho {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .filtros {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    /* a busca ocupa o espaço que sobra e quebra de linha se o resto não couber */
+    .cabecalho .filtros > :first-child {
+        flex: 1 1 12rem;
+        min-width: 0;
+    }
+
+    /* os nomes das colunas somem; cada linha já mostra o que cada coisa é */
+    .colunas {
+        display: none;
+    }
+
+    .linha {
+        grid-template-columns: 1fr auto;
+        grid-auto-rows: auto;
+        gap: 0.5rem 1rem;
+        padding: 0.75rem 1rem;
+    }
+
+    /* o botão de editar fica no canto superior direito do cartão */
+    .acao {
+        grid-column: 2;
+        grid-row: 1;
+    }
+}

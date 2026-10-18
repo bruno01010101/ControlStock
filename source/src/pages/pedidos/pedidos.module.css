@@ -1,19 +1,4 @@
-/* ===== Cole no FINAL do Pedidos.module.css ===== */
-
-/* Card "Novo pedido" */
-.novoPedido {
-    --azul: #2563eb;
-    --azul-escuro: #1d4ed8;
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
+/* ===== Layout da página ===== */
 .pagina {
     display: flex;
     justify-content: center;
@@ -29,6 +14,54 @@
 .pedidos {
     flex: 0 0 60%;
     min-width: 0;
+}
+
+.iconeHistorico {
+    color: var(--secondary-text-color);
+    flex-shrink: 0;
+}
+
+/* ===== Células das linhas da tabela ===== */
+.celula {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.codigo {
+    color: var(--primary-text-color);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.secundario {
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+}
+
+.itemPrincipal {
+    color: var(--primary-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.total {
+    color: var(--primary-text-color);
+    font-weight: 600;
+}
+
+/* ===== Card "Novo pedido" ===== */
+.novoPedido {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .formCabecalho {
@@ -88,6 +121,7 @@
     width: 100%;
     height: 2.5rem;
     padding: 0 0.75rem;
+    box-sizing: border-box;
     font: inherit;
     font-size: 0.875rem;
     color: var(--primary-text-color);
@@ -97,15 +131,9 @@
 }
 
 .input:focus-visible {
-    outline: 2px solid var(--azul);
+    outline: 2px solid var(--azul, #2563eb);
     outline-offset: -1px;
-    border-color: var(--azul);
-}
-
-/* [readonly] e não :read-only, porque :read-only também pega os <select> */
-.input[readonly] {
-    background-color: var(--background-color);
-    color: var(--secondary-text-color);
+    border-color: var(--azul, #2563eb);
 }
 
 .selectCampo {
@@ -156,6 +184,7 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    gap: 0.5rem;
 }
 
 .itensTitulo {
@@ -176,14 +205,14 @@
     padding: 0;
     font: inherit;
     font-size: 0.875rem;
-    color: var(--azul);
+    color: var(--azul, #2563eb);
     background: none;
     border: 0;
     cursor: pointer;
 }
 
 .adicionarItem:hover {
-    color: var(--azul-escuro);
+    text-decoration: underline;
 }
 
 /* Rodapé e botões */
@@ -198,6 +227,7 @@
 .botao {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.4rem;
     height: 2.25rem;
     padding: 0 1rem;
@@ -220,46 +250,89 @@
 
 .botaoPrimario {
     color: white;
-    background-color: var(--azul);
-    border: 1px solid var(--azul);
+    background-color: var(--azul, #2563eb);
+    border: 1px solid var(--azul, #2563eb);
 }
 
 .botaoPrimario:hover {
-    background-color: var(--azul-escuro);
-    border-color: var(--azul-escuro);
+    filter: brightness(0.92);
 }
 
-.iconeHistorico {
-    color: var(--secondary-text-color);
-    flex-shrink: 0;
+.botao:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
-.celula {
+/* Mensagens de erro */
+.erro {
+    font-size: 0.8rem;
+    color: #b91c1c;
+}
+
+.erroLista {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
-    min-width: 0;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    font-size: 0.875rem;
+    color: #b91c1c;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.codigo {
-    color: var(--primary-text-color);
-    font-weight: 700;
-    white-space: nowrap;
+/* ===== Responsivo ===== */
+
+/* Tablet e telas menores: tabela em cima, formulário embaixo, os dois na largura toda.
+   (1200px porque o menu lateral também ocupa espaço; ajuste se o seu menu for diferente) */
+@media (max-width: 1200px) {
+    .pagina {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pedidos,
+    .novoPedido {
+        flex: none;
+        width: 100%;
+    }
 }
 
-.secundario {
-    font-size: 0.75rem;
-    color: var(--secondary-text-color);
+/* Celular */
+@media (max-width: 640px) {
+    .pagina {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    /* na linha em cartão, o total fica alinhado à direita da coluna */
+    .total {
+        justify-self: end;
+    }
+
+    .formCabecalho {
+        padding: 1rem;
+    }
+
+    .formCorpo {
+        padding: 1rem;
+    }
+
+    .formRodape {
+        padding: 0.75rem 1rem;
+    }
 }
 
-.itemPrincipal {
-    color: var(--primary-text-color);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+/* Celular pequeno: campos lado a lado viram um embaixo do outro */
+@media (max-width: 480px) {
+    .linhaDupla,
+    .linhaItem {
+        grid-template-columns: 1fr;
+    }
 
-.total {
-    color: var(--primary-text-color);
-    font-weight: 600;
+    .formRodape .botao {
+        flex: 1;
+    }
 }

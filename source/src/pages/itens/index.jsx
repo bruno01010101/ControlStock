@@ -28,6 +28,12 @@ function situacaoDoItem({ quantidade, estoque_minimo }) {
   return { text: "Em estoque", situacao: "bom" };
 }
 
+const OPCOES_ESTOQUE = [
+  { value: "ruim", label: "Estoque baixo" },
+  { value: "mid", label: "Estoque médio" },
+  { value: "bom", label: "Estoque alto" },
+];
+
 export default function Itens() {
   //const { lista } = useSelector((state) => state.itens);
   const unidadeSel = useSelector((state) => state.unidades.unidadeSelecionadaId);
@@ -117,7 +123,7 @@ export default function Itens() {
           <Tabela>
             <Tabela.Cabecalho titulo="Todos os itens" subtitulo={`x itens cadastrados`}>
               <SearchInput placeholder="Buscar itens..." text={busca} onChange={handleBusca} />
-              <Selecao value={situacao} onChange={handleSituacao} />
+              <Selecao value={situacao} onChange={handleSituacao} opcoes={OPCOES_ESTOQUE} />
             </Tabela.Cabecalho>
 
             <Tabela.Colunas nomes={["Produtos", "Código", "Categoria", "Quantidade", "Situação"]} />
