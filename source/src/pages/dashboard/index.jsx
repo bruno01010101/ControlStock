@@ -12,6 +12,8 @@ import { PiNotebook } from "react-icons/pi";
 import ItensBaixoEstoque from '../../components/ItensBaixoEstoque';
 import { selecionarUnidade, fetchUnidades, selectListaUnidades, selectUnidadeSelecionadaId } from '../../store/slices/unidadesSlice';
 import { selectOrganizacaoCodigo } from "../../store/slices/organizacaoSlice";
+import UltimasMovimentacoes from "../../components/movimentacoes";
+import GastosPorCategoria from './gastosCategoria';
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -25,6 +27,29 @@ export default function Dashboard() {
 
   const [periodo, setPeriodo] = useState("30d");
   const organizacoes = codigo ? [{ value: codigo, label: nome }] : [];
+
+  const gastosPorCategoria = [
+    {
+      nome: "Alimentos",
+      valor: 24120,
+      porcentagem: 50,
+    },
+    {
+      nome: "Ingredientes",
+      valor: 12060,
+      porcentagem: 25,
+    },
+    {
+      nome: "Utilidades",
+      valor: 7236,
+      porcentagem: 15,
+    },
+    {
+      nome: "Descartáveis",
+      valor: 4824,
+      porcentagem: 10,
+    },
+  ];
 
   return (
     <>
@@ -70,27 +95,33 @@ export default function Dashboard() {
             textoBotao="Criar unidade"
           />
         ) : (
-          <section className={styles.section}>
-            <div className={styles.item} style={{ width: '50%' }}>
-              <div className={styles.figure}>
-                <p className={styles.p}>Total gasto no período</p>
-                <PiNotebook color='blue' />
+          <>
+            <section className={styles.section}>
+              <div className={styles.item} >
+                <div className={styles.figure}>
+                  <p className={styles.p}>Total gasto no período</p>
+                  <PiNotebook color='blue' />
+                </div>
+                <p className={styles.emphasis}>R$ 48.240,00</p>
+                <p className={styles.p}>compras recebidas janeiro a julho de 2026</p>
               </div>
-              <p className={styles.emphasis}>R$ 48.240,00</p>
-              <p className={styles.p}>compras recebidas janeiro a julho de 2026</p>
-            </div>
-            <div className={styles.item} style={{ width: '25%' }}>
-              <div className={styles.figure}>
-                <p className={styles.p}>Itens cadastrados</p>
-                <PiNotebook color='blue' />
+              <div className={`${styles.item} ${styles.item2}`}>
+                <div className={styles.figure}>
+                  <p className={styles.p}>Itens cadastrados</p>
+                  <PiNotebook color='blue' />
+                </div>
+                <p className={styles.emphasis}>128</p>
+                <p className={styles.p}>Em todas as unidades</p>
               </div>
-              <p className={styles.emphasis}>128</p>
-              <p className={styles.p}>Em todas as unidades</p>
+              <div className={styles.baixo}>
+                <ItensBaixoEstoque quantidade={6} />
+              </div>
+            </section>
+            <div>
+              <GastosPorCategoria categorias={gastosPorCategoria}/>
             </div>
-            <div style={{ width: '25%' }}>
-              <ItensBaixoEstoque quantidade={6} />
-            </div>
-          </section>
+            <UltimasMovimentacoes direction="row" />
+          </>
         )}
       </div>
     </>

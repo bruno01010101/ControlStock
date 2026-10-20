@@ -1,0 +1,81 @@
+
+.card {
+  flex: 1;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 22px;
+}
+
+.titulo {
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  color: #1e293b;
+}
+
+.subtitulo {
+  color: #71809c;
+  font-size: 0.875rem !important;
+  margin-top: 2px !important;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.categoria {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.nome {
+  color: #1e293b;
+  font-size: 0.875rem !important;
+}
+
+.valor {
+  color: #71809c;
+  font-size: 0.75rem !important;
+  white-space: nowrap;
+}
+
+.trilho {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background-color: #f1f5f9;
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.rodape {
+  border-top: 1px solid #e9edf3;
+  margin-top: 20px;
+  padding-top: 12px;
+}
+
+.textoRodape {
+  color: #71809c;
+  font-size: 0.75rem !important;
+}

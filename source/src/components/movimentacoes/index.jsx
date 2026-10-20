@@ -195,9 +195,11 @@ export default function UltimasMovimentacoes({ direction = "column", maxHeight =
         borderRadius: "16px",
         overflow: "hidden",
         maxHeight: direction === "row" ? maxHeight : "none", // o limite de altura só vale no row
+        border: '1px solid var(--border-color)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", px: 2.5, pt: 2.5, pb: 1.5 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", px: 2.5, pt: 2.5, pb: 1.5, padding: '10px' }}>
         <Box>
           <Typography sx={{ fontSize: "1.125rem", fontWeight: 700, color: "#1E2433", lineHeight: 1.2 }}>
             Últimas movimentações
