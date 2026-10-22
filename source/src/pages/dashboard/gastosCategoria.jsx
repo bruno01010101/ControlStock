@@ -15,7 +15,7 @@ export default function GastosPorCategoria({ categorias }) {
     <Box className={styles.card}>
       <Box className={styles.header}>
         <Typography className={styles.titulo}>
-          Gastos por categoria
+          Gastos por unidade
         </Typography>
 
         <Typography className={styles.subtitulo}>

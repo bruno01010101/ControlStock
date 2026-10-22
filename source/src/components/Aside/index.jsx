@@ -3,24 +3,38 @@ import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router';
 import { RiDashboardFill } from "react-icons/ri";
 import { FiBox } from "react-icons/fi";
-import { BsBoxArrowDown,BsBoxArrowInUp  } from "react-icons/bs";
+import { BsBoxArrowDown, BsBoxArrowInUp } from "react-icons/bs";
 import { TiClipboard } from "react-icons/ti";
 import Avatar from '@mui/material/Avatar';
 import MoreButton from '../moreButton';
-import { CiCircleQuestion } from "react-icons/ci";
-import { logout } from '../../supabase/storageFunctions';
+import { logout, VerificaLogin } from '../../supabase/storageFunctions';
+import { useEffect, useState } from "react";
 
 export default function Aside() {
   const navigate = useNavigate();
   const signOut = async () => {
-    const {error} = await logout()
-    if(error){
+    const { error } = await logout()
+    if (error) {
       console.warn(error)
       return null
     }
     navigate('/auth/login');
   }
+
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    VerificaLogin().then((sessao) => setUsuario(sessao?.user ?? null));
+  }, []);
+
+  const nome =
+    usuario?.user_metadata?.full_name ??
+    usuario?.user_metadata?.name ??
+    usuario?.email?.split("@")[0] ??
+    "Usuário";
+
   return (
+
     <aside className={styles.aside}>
       <section className={styles.menu}>
         <div className={styles.menuHeader}>
@@ -36,13 +50,13 @@ export default function Aside() {
         </div>
         <div className={styles.menuItems}>
           <div>
-              <p className="menuTitle">MENU</p>
+            <p className="menuTitle">MENU</p>
             <Link to="/" className={styles.menuItem}>
               <RiDashboardFill />
               Dashboard
             </Link>
           </div>
-          <Link to="/itens" className={styles.menuItem}>  
+          <Link to="/itens" className={styles.menuItem}>
             <div className={styles.menuItemIcon}>
               <FiBox />
               Itens
@@ -72,10 +86,12 @@ export default function Aside() {
         <p className='menuTitle' style={{ fontWeight: 'bold' }}>Central de Ajuda</p>
         <hr />
         <div className={styles.menuHeader}>
-          <Avatar sx={{ bgcolor: 'blue[500]' }}>B</Avatar>
+          <Avatar sx={{ bgcolor: 'primary.main' }}>{nome.charAt(0).toUpperCase()}</Avatar>
           <div className={styles.footeText}>
-            <p style={{fontSize: '0.900rem', margin: '0' }}>Nome do Usuário</p>
-            <p style={{ fontSize: '0.750rem', color: 'var(--primary-text-color)' }}>função</p>
+            <p style={{ fontSize: '0.900rem', margin: '0' }}>{nome}</p>
+            <p style={{ fontSize: '0.750rem', color: 'var(--primary-text-color)' }}>
+              {usuario?.email}
+            </p>
           </div>
           <span className={styles.moreButton}>
             <MoreButton options={["Configurações", "Sair"]} click={['', signOut]} />

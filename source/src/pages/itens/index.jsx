@@ -13,7 +13,7 @@ import { PageHeader } from '../../components/header';
 import EstadoVazio from '../../components/EstadoVazio/EstadoVazio';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { selectItensDaUnidade, excluirItem } from '../../store/slices/itensSlice';
+import { selectItensDaUnidade, excluirItem, selectQuantidadeBaixoEstoque } from '../../store/slices/itensSlice';
 import ItemCard from '../../components/itemCard';
 import { useDispatch } from 'react-redux';
 import UltimasMovimentacoes from '../../components/movimentacoes';
@@ -33,6 +33,8 @@ const OPCOES_ESTOQUE = [
   { value: "mid", label: "Estoque médio" },
   { value: "bom", label: "Estoque alto" },
 ];
+
+
 
 export default function Itens() {
   //const { lista } = useSelector((state) => state.itens);
@@ -100,6 +102,10 @@ export default function Itens() {
     await dispatch(excluirItem(item.id)).unwrap();
   };
 
+  const itensBaixoEstoque = useSelector((state) =>
+    selectQuantidadeBaixoEstoque(state, unidadeSel)
+  );
+
   return (
     <>
       <PageHeader
@@ -162,7 +168,8 @@ export default function Itens() {
 
           <section className={styles.lateral}>
             <div style={{ height: "150px" }}>
-              <ItensBaixoEstoque quantidade={6} />
+              <ItensBaixoEstoque quantidade={itensBaixoEstoque} />
+
             </div>
             <UltimasMovimentacoes direction='column' />
           </section>

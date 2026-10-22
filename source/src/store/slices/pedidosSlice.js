@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { supabase } from "../../supabase";
 import { selectOrganizacaoCodigo } from "./organizacaoSlice";
-import { selectUnidadeSelecionadaId } from "./unidadesSlice"; 
+import { selectUnidadeSelecionadaId } from "./unidadesSlice";
 
 // Pedido + itens do pedido + nome de cada item, em uma consulta só
 // (o Supabase faz o join pelas FKs id_pedido e id_item)
@@ -144,6 +144,27 @@ export const atualizarPedido = createAsyncThunk(
   }
 );
 
+export const buscarGastosDashboard = createAsyncThunk(
+  "pedidos/buscarGastosDashboard",
+  async ({ inicio, fim }, { getState, rejectWithValue }) => {
+    const state = getState();
+    const codigo_organizacao = selectOrganizacaoCodigo(state);
+    if (!codigo_organizacao) return rejectWithValue("Organização não carregada");
+
+    const unidadeId = selectUnidadeSelecionadaId(state);
+
+    const { data, error } = await supabase.rpc("gastos_dashboard", {
+      p_codigo_organizacao: codigo_organizacao,
+      p_unidade: unidadeId == null || unidadeId === "" ? null : Number(unidadeId),
+      p_inicio: inicio, // "2026-01-01"
+      p_fim: fim, // "2026-06-30"
+    });
+
+    if (error) return rejectWithValue(error.message);
+    return data;
+  }
+);
+
 /* ------------------------------ slice ------------------------------- */
 
 const pedidosSlice = createSlice({
@@ -155,6 +176,12 @@ const pedidosSlice = createSlice({
     error: null,
     salvando: false, // criando ou atualizando um pedido
     requisicaoAtual: null, // para ignorar respostas antigas
+    dashboard: {
+      dados: null,
+      status: "idle", // idle | loading | succeeded | failed
+      error: null,
+      requisicaoAtual: null,
+    },
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -178,6 +205,21 @@ const pedidosSlice = createSlice({
         state.status = "failed";
         state.error = action.payload ?? action.error.message;
       })
+      .addCase(buscarGastosDashboard.pending, (state, action) => {
+        state.dashboard.status = "loading";
+        state.dashboard.error = null;
+        state.dashboard.requisicaoAtual = action.meta.requestId;
+      })
+      .addCase(buscarGastosDashboard.fulfilled, (state, action) => {
+        if (action.meta.requestId !== state.dashboard.requisicaoAtual) return;
+        state.dashboard.status = "succeeded";
+        state.dashboard.dados = action.payload;
+      })
+      .addCase(buscarGastosDashboard.rejected, (state, action) => {
+        if (action.meta.requestId !== state.dashboard.requisicaoAtual) return;
+        state.dashboard.status = "failed";
+        state.dashboard.error = action.payload ?? action.error.message;
+      })
       .addMatcher(
         isAnyOf(criarPedido.pending, atualizarPedido.pending),
         (state) => {
@@ -200,32 +242,11 @@ const pedidosSlice = createSlice({
 
 export default pedidosSlice.reducer;
 
-/* ----------------------------- selectors ---------------------------- */
-
 export const selectPedidos = (state) => state.pedidos.lista;
 export const selectPedidosFiltro = (state) => state.pedidos.filtro;
 export const selectPedidosStatus = (state) => state.pedidos.status;
 export const selectPedidosErro = (state) => state.pedidos.error;
 export const selectPedidosSalvando = (state) => state.pedidos.salvando;
-
-/* ---------------------------------------------------------------------
-   DASHBOARD (a fazer)
-
-   Os totais (gasto por unidade, por organização e por categoria) devem vir
-   de uma view ou função SQL no Supabase, e não de joins no front: o banco
-   soma tudo de uma vez e o navegador recebe só o resultado.
-
-   Quando criar, siga este modelo (e adicione `dashboard` ao initialState):
-
-   export const buscarGastosDashboard = createAsyncThunk(
-     "pedidos/buscarGastosDashboard",
-     async (_arg, { getState, rejectWithValue }) => {
-       const { data, error } = await supabase.rpc("gastos_dashboard", {
-         p_unidade: Number(selectUnidadeSelecionadaId(getState())),
-         p_codigo_organizacao: selectOrganizacaoCodigo(getState()),
-       });
-       if (error) return rejectWithValue(error.message);
-       return data;
-     }
-   );
---------------------------------------------------------------------- */
+export const selectDashboard = (state) => state.pedidos.dashboard.dados;
+export const selectDashboardStatus = (state) => state.pedidos.dashboard.status;
+export const selectDashboardErro = (state) => state.pedidos.dashboard.error;

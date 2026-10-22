@@ -89,6 +89,42 @@ export async function buscarMovimentacoes({ tipo, codigoOrganizacao, limite }) {
   });
 }
 
+// Cole no itensSlice, logo abaixo da buscarMovimentacoes (que continua igual).
+// Mesma consulta, com um filtro a mais: só as movimentações da unidade.
+export async function buscarMovimentacoesDaUnidade({ tipo, codigoOrganizacao, unidadeId, limite }) {
+  const { tabelaItens, cabecalho } = TABELAS[tipo];
+
+  let query = supabase
+    .from(tabelaItens)
+    .select(
+      `id, created_at, quantidade,
+       item:itens ( nome ),
+       ${cabecalho}!inner ( unidade, setor_solicitante, nome_solicitante, organizacao_codigo )`
+    )
+    .eq(`${cabecalho}.organizacao_codigo`, codigoOrganizacao)
+    .eq(`${cabecalho}.unidade`, unidadeId) // <- o filtro novo, feito no banco
+    .order("created_at", { ascending: false });
+
+  // o limite vem depois do filtro, então "3 mais recentes" são as 3 da unidade
+  if (limite) query = query.limit(limite);
+
+  const { data, error } = await query;
+  if (error) throw error;
+
+  return data.map((linha) => {
+    const mov = linha[cabecalho];
+    return {
+      id: linha.id,
+      produto: linha.item?.nome ?? "—",
+      quantidade: linha.quantidade,
+      criadoEm: linha.created_at,
+      unidadeId: mov.unidade,
+      origem: mov.setor_solicitante ?? "—",
+    };
+  });
+}
+
+
 /**
  * Cadastra um item. id e created_at são gerados pelo banco.
  * A quantidade sempre começa em 0 (a entrada no estoque vem depois).
@@ -181,6 +217,17 @@ export async function excluirPorId(id) {
   const { error } = await supabase.from(TABELA).delete().eq("id", id);
   if (error) throw error;
 }
+// no itensSlice. unidadeId vazio = todas as unidades
+export const selectQuantidadeBaixoEstoque = (state, unidadeId) => {
+  const itens =
+    unidadeId == null || unidadeId === ""
+      ? state.itens.lista
+      : selectItensDaUnidade(state, unidadeId);
+
+  return itens.filter(
+    (item) => item.estoque_minimo != null && item.quantidade <= item.estoque_minimo
+  ).length;
+};
 
 export const excluirItem = createAsyncThunk(
   "itens/excluirItem",

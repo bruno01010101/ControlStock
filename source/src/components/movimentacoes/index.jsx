@@ -16,9 +16,9 @@ import TableRow from "@mui/material/TableRow";
 import HistoryIcon from "@mui/icons-material/History";
 import NorthEast from "@mui/icons-material/NorthEast";
 import SouthWest from "@mui/icons-material/SouthWest";
-import { buscarMovimentacoes } from "../../store/slices/itensSlice"; // ajuste o caminho
+import { buscarMovimentacoes, buscarMovimentacoesDaUnidade } from "../../store/slices/itensSlice"; // ajuste o caminho
 import { selectOrganizacaoCodigo } from "../../store/slices/organizacaoSlice";
-// import { selectOrganizacaoCodigo } from "..."; // o mesmo que você já usa no slice
+import { selectUnidadeSelecionadaId } from "../../store/slices/unidadesSlice"; // ajuste o caminho
 
 const TIPOS = {
   entrada: { label: "Entrada", plural: "Entradas", sinal: "+", cor: "#0E8A5F", fundo: "#E3F5EC", Icone: NorthEast },
@@ -41,23 +41,30 @@ function formatarData(iso) {
 
 /* Hook: o "carregando" é derivado da chave, sem setState dentro do efeito
    (evita o aviso do ESLint que você viu antes). */
-function useMovimentacoes({ tipo, limite }) {
+// unidadeId: quando vem preenchido, só as movimentações dessa unidade; vazio = organização inteira
+function useMovimentacoes({ tipo, limite, unidadeId }) {
   const codigoOrganizacao = useSelector(selectOrganizacaoCodigo);
-  const chave = `${tipo}|${limite ?? "todas"}|${codigoOrganizacao}`;
+  const chave = `${tipo}|${limite ?? "todas"}|${codigoOrganizacao}|${unidadeId ?? "todas"}`;
   const [resultado, setResultado] = useState({ chave: null, dados: [], erro: null });
 
   useEffect(() => {
     if (!codigoOrganizacao) return;
     let cancelado = false;
 
-    buscarMovimentacoes({ tipo, codigoOrganizacao, limite })
+    // com unidade: busca só dela; sem unidade: a organização inteira (função de sempre)
+    const buscar =
+      unidadeId != null
+        ? buscarMovimentacoesDaUnidade({ tipo, codigoOrganizacao, unidadeId, limite })
+        : buscarMovimentacoes({ tipo, codigoOrganizacao, limite });
+
+    buscar
       .then((dados) => !cancelado && setResultado({ chave, dados, erro: null }))
       .catch((e) => !cancelado && setResultado({ chave, dados: [], erro: e.message }));
 
     return () => {
       cancelado = true; // ignora respostas antigas se o usuário trocar de tipo rápido
     };
-  }, [chave, tipo, codigoOrganizacao, limite]);
+  }, [chave, tipo, codigoOrganizacao, limite, unidadeId]);
 
   const carregando = resultado.chave !== chave;
   return {
@@ -142,7 +149,7 @@ function TabelaMovimentacoes({ tipo, movimentacoes, nomeUnidade }) {
                 />
               </TableCell>
               <TableCell sx={{ color: "#6B7280 !important" }}>{origem}</TableCell>
-              <TableCell sx={{ color: "#6B7280 !important" }}>{nomeUnidade.get(unidadeId) ?? "—"}</TableCell>
+              <TableCell sx={{ color: "#6B7280 !important" }}>{nomeUnidade.get(String(unidadeId)) ?? "—"}</TableCell>
               <TableCell align="right" sx={{ color: `${cor} !important`, fontWeight: 600 }}>
                 {sinal}{quantidade}
               </TableCell>
@@ -164,10 +171,19 @@ export default function UltimasMovimentacoes({ direction = "column", maxHeight =
   const [anchorEl, setAnchorEl] = useState(null);
 
   const limite = direction === "column" ? 3 : undefined; // column: 3 mais recentes; row: todas
-  const { movimentacoes, carregando, erro } = useMovimentacoes({ tipo, limite });
 
+  // column: só a unidade selecionada; row: a organização inteira
+  const unidadeSelecionadaId = useSelector(selectUnidadeSelecionadaId);
+  const unidadeId =
+    direction === "column" && unidadeSelecionadaId != null && unidadeSelecionadaId !== ""
+      ? Number(unidadeSelecionadaId)
+      : undefined;
+
+  const { movimentacoes, carregando, erro } = useMovimentacoes({ tipo, limite, unidadeId });
+
+  // chave como texto: evita "—" quando um lado vem como número e o outro como texto
   const unidades = useSelector((state) => state.unidades.lista);
-  const nomeUnidade = useMemo(() => new Map(unidades.map((u) => [u.id, u.nome])), [unidades]);
+  const nomeUnidade = useMemo(() => new Map(unidades.map((u) => [String(u.id), u.nome])), [unidades]);
 
   let corpo;
   if (erro) {

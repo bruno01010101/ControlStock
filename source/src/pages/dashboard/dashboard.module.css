@@ -48,3 +48,104 @@
         flex-wrap: wrap;
     }
 }
+
+/* ===== ADICIONE ao final do seu dashboard.module.css (só classes novas) ===== */
+
+/* gráfico + gastos por unidade lado a lado */
+.analise {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+}
+
+.analise > * {
+    min-width: 0;
+}
+
+.cabecalhoCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.tituloCard {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--primary-text-color);
+}
+
+.legenda {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+    white-space: nowrap;
+}
+
+.legenda::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2563eb;
+}
+
+/* o gráfico se estica até o rodapé e nunca estoura o card */
+.grafico {
+    flex: 1;
+    min-width: 0;
+    min-height: 220px;
+}
+
+.rodape {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 12px;
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.rodape strong {
+    color: var(--primary-text-color);
+    font-weight: 600;
+}
+
+.erro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    font-size: 0.875rem;
+    color: #b91c1c;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+/* notebook/tablet: gráfico e gastos um embaixo do outro */
+@media (max-width: 1100px) {
+    .analise {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* celular */
+@media (max-width: 640px) {
+    .analise {
+        gap: 1rem;
+    }
+
+    .grafico {
+        min-height: 200px;
+    }
+
+    .rodape {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
