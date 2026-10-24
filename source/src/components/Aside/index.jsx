@@ -9,9 +9,13 @@ import Avatar from '@mui/material/Avatar';
 import MoreButton from '../moreButton';
 import { logout, VerificaLogin } from '../../supabase/storageFunctions';
 import { useEffect, useState } from "react";
+import { selectOrganizacaoCodigo } from '../../store/slices/organizacaoSlice';
+import { useSelector } from "react-redux";
+
 
 export default function Aside() {
   const navigate = useNavigate();
+  const code = useSelector(selectOrganizacaoCodigo)
   const signOut = async () => {
     const { error } = await logout()
     if (error) {
@@ -83,7 +87,7 @@ export default function Aside() {
         </div>
       </section>
       <section className={styles.footer}>
-        <p className='menuTitle' style={{ fontWeight: 'bold' }}>Central de Ajuda</p>
+        <p className='menuTitle' style={{ fontWeight: 'bold' }}>Código de organização: {code}</p>
         <hr />
         <div className={styles.menuHeader}>
           <Avatar sx={{ bgcolor: 'primary.main' }}>{nome.charAt(0).toUpperCase()}</Avatar>

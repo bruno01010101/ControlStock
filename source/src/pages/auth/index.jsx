@@ -34,7 +34,7 @@ export default function Auth({ type }) {
         </div>
       </div>
       <main className={styles.main}>
-        <h2 style={{ paddingBottom: "0.5rem" }}>Bem vindo de volta</h2>
+        <h2 style={{ paddingBottom: "0.5rem" }}>{type === 'login' ? 'Bem vindo de volta' : 'Faça cadastro'}</h2>
         <p className={styles.p}>{type === 'login' ? 'Entre na sua' : 'Crie uma'} conta para gerenciar seu estoque</p>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
@@ -65,7 +65,7 @@ export default function Auth({ type }) {
               </div>
 
 
-              <input type="text" name="text" id="" placeholder={creatingOrg ? "Criar uma nova organização" : "Dígite o código da sua organização"} value={org} onChange={(v) => setOrg(v.target.value)} />
+              <input type="text" name="text" id="" placeholder={creatingOrg ? "Criar uma nova organização" : "Dígite o código da sua organização"} value={org} onChange={(v) => setOrg(v.target.value)} required />
             </>
           )}
           <p className={styles.blue}>Esqueci minha senha</p>

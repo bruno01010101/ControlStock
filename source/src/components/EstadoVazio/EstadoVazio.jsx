@@ -1,4 +1,5 @@
 import styles from "./estadoVazio.module.css";
+import { Link } from "react-router";
 
 /**
  * Props:
@@ -13,9 +14,9 @@ export default function EstadoVazio({ titulo, descricao, textoBotao }) {
       <h3 className={styles.titulo}>{titulo}</h3>
       {descricao && <p className={styles.descricao}>{descricao}</p>}
       {textoBotao && (
-        <button type="button" className={styles.botao}>
+        <Link to="/form/unidade" className={styles.botao}>
           {textoBotao}
-        </button>
+        </Link>
       )}
     </div>
   );
