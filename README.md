@@ -3,6 +3,10 @@ sistema de controle de estoque feito para pequenos comércios ou uso pessoal que
 
 ![alt text](image-1.png)
 
+# Link para acessar
+
+https://control-stock-blush.vercel.app/
+
 # Funcionalidades
 
 - Organizações: o usuário pode criar uma organização ou utilizar o código de uma organização existente. Para uso pessoal, é possível utilizar uma organização própria.
